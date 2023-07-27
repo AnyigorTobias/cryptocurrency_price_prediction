@@ -42,7 +42,7 @@ def save_data(df, usecase,end_date):
     print("you are doing a good job savvy engineer")
     
     
-def main():
+def main(start_date, end_date,usecase):
    
     # Fetch data
     btc_data, eth_data, SandP_data = fetch_data(start_date, end_date)
@@ -58,13 +58,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("start_date", type=str, help="input the year e.g yyyy-mm-dd")
     parser.add_argument("end_date", type=str, help = 'input the month of the data e.g yyyy-mm-dd')
-    parser.add_argument("usecase", type = str, help = 'enter train or test')
+    parser.add_argument("usecase", type = str,help = 'enter train or test')
     args = parser.parse_args()
     
     year = args.start_date
     month = args.end_date
     usecase = args.usecase
-    main(year, month)
+    main(year, month,usecase)
 
 
 
