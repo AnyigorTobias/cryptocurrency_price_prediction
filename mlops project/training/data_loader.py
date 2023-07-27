@@ -9,9 +9,16 @@ import argparse
 def fetch_data(start_date, end_date):
     """This will fetch data from yfinance and then merge the btc data with eth and s&p500 close data
     this will result in a six features dataset containing BTC OHLC, ETH close and s&p500 close"""
+    
     btc_data = yf.download('BTC-USD', start = start_date, end= end_date)
+    
+    
     eth_data = yf.download('ETH-USD', start = start_date, end= end_date)
+    
     SandP_data = yf.download('^GSPC', start = start_date, end= end_date)
+    
+    
+    
     return btc_data, eth_data, SandP_data
 
 def prepare_data(btc_data, eth_data, SandP_data):
@@ -22,6 +29,8 @@ def prepare_data(btc_data, eth_data, SandP_data):
     SandP_data.rename(columns={'Close': 's&p500'}, inplace=True)
     df = pd.merge(btc_df, eth_data['eth'], on='Date', how='left')
     df = pd.merge(df, SandP_data['s&p500'], on='Date', how='left')
+    
+    
 
     #handling missing data in the dataframe
 
@@ -37,7 +46,7 @@ def save_data(df, usecase,end_date):
     df.to_parquet(
             output_file, 
             engine='pyarrow', 
-            index=False)
+            index=True)
 
     print("you are doing a good job savvy engineer")
     
@@ -49,7 +58,7 @@ def main(start_date, end_date,usecase):
 
     # Prepare data
     df = prepare_data(btc_data, eth_data, SandP_data)
-
+    
     # Save data
     save_data(df,usecase,end_date)
     
@@ -61,10 +70,10 @@ if __name__ == "__main__":
     parser.add_argument("usecase", type = str,help = 'enter train or test')
     args = parser.parse_args()
     
-    year = args.start_date
-    month = args.end_date
+    start_date = args.start_date
+    end_date = args.end_date
     usecase = args.usecase
-    main(year, month,usecase)
+    main(start_date,end_date, usecase)
 
 
 
