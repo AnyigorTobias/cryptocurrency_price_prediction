@@ -31,8 +31,6 @@ def read_data(filename: str):
       
     
 def MAPE(d_test, d_pred):
-    
-    
    MAPE= np.average(np.abs((d_test - d_pred) / d_test)) * 100
    return MAPE
    
